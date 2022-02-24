@@ -1,0 +1,28 @@
+{
+  "name": "get-weather-cli",
+  "version": "1.0.0",
+  "description": "Get your current weather based on your wifi signals",
+  "main": "index.js",
+  "type": "module",
+  "author": "Adi biton",
+  "license": "ISC",
+  "bin": {
+    "weather": "./index.js"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/**/*",
+      "src/**/*",
+      ".env"
+    ],
+    "targets": [
+      "node10-win-x64"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "commander": "^9.0.0",
+    "dotenv": "^16.0.0",
+    "minimist": "^1.2.5"
+  }
+}
