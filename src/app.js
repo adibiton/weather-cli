@@ -36,6 +36,8 @@ async function fetchUserLocationWith(macAddresses) {
     },
     method: "Post",
     headers: { "Content-Type": "application/json" },
+  }).catch((e) => {
+    throw new Error(`Failed to fetch user location with error(s): ${e.message}`);
   });
   return response.data.location;
 }
@@ -68,22 +70,23 @@ function buildForecastOutput(forecast, todayWeather) {
 }
 
 async function getUserLocation() {
-  try {
-    const macAddresses = await getMacAddressOfAccessPoints();
-    return await fetchUserLocationWith(macAddresses);
-  } catch (e) {
-    console.error(e);
-  }
+  const macAddresses = await getMacAddressOfAccessPoints();
+  return await fetchUserLocationWith(macAddresses);
 }
 
 async function getWeather(argv) {
-  const location = await getUserLocation();
-  if (argv.t) {
-    const [forecast, todayWeather] = await Promise.all([getForcastWeatherOn(location), getTodayWeatherOn(location)]);
-    return buildForecastOutput(forecast, todayWeather);
-  } else {
-    const weather = await getTodayWeatherOn(location);
-    return buildTodayWeatherOutput(weather);
+  try {
+    const location = await getUserLocation();
+    if (argv.t) {
+      const [forecast, todayWeather] = await Promise.all([getForcastWeatherOn(location), getTodayWeatherOn(location)]);
+      return buildForecastOutput(forecast, todayWeather);
+    } else {
+      const weather = await getTodayWeatherOn(location);
+      return buildTodayWeatherOutput(weather);
+    }
+  } catch (e) {
+    console.error(e);
+    return;
   }
 }
 export { getWeather };

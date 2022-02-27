@@ -4,4 +4,7 @@ import argv from "minimist";
 
 const args = argv(process.argv.slice(2));
 
-console.log(await getWeather(args));
+const weather = await getWeather(args);
+if (weather) {
+  console.log(weather);
+}
